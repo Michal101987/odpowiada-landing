@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>odpowiada.pl – Chatbot AI dla Twojego biznesu</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --black: #0D0D0D;
+  --gray-900: #1A1A1A;
+  --gray-600: #4A4A4A;
+  --gray-400: #888;
+  --gray-200: #E8E8E8;
+  --gray-100: #F5F5F5;
+  --white: #FFFFFF;
+  --green: #1DB954;
+  --green-light: #F0FBF4;
+  --green-border: #C3EDD1;
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 6vw; height: 64px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.logo {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 30px; height: 30px;
+  background: var(--black);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.logo-mark svg { width: 16px; height: 16px; fill: var(--white); }
+
+.logo-name {
+  font-size: 16px; font-weight: 700;
+  color: var(--black); letter-spacing: -0.3px;
+}
+
+.logo-name span { color: var(--green); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 28px; list-style: none;
+}
+
+.nav-links a {
+  color: var(--gray-600); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover { color: var(--black); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none; font-weight: 600; font-size: 14px;
+  padding: 10px 20px; border-radius: var(--radius);
+  transition: all 0.15s; cursor: pointer; border: none;
+}
+
+.btn-dark {
+  background: var(--black); color: var(--white);
+}
+.btn-dark:hover { background: var(--gray-900); }
+
+.btn-outline {
+  background: var(--white); color: var(--black);
+  border: 1.5px solid var(--gray-200);
+}
+.btn-outline:hover { border-color: var(--gray-400); }
+
+.btn-green {
+  background: var(--green); color: var(--white);
+  box-shadow: 0 2px 12px rgba(29,185,84,0.25);
+}
+.btn-green:hover { box-shadow: 0 4px 20px rgba(29,185,84,0.35); transform: translateY(-1px); }
+
+.btn-lg { padding: 14px 28px; font-size: 15px; border-radius: 14px; }
+
+/* ── HERO ── */
+.hero {
+  padding: 130px 6vw 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--green-light);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 5px 12px; border-radius: 20px;
+  margin-bottom: 24px;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  background: var(--green); border-radius: 50%;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+}
+
+.hero h1 {
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--black);
+  margin-bottom: 20px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--green);
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--gray-600);
+  line-height: 1.7;
+  font-weight: 400;
+  margin-bottom: 36px;
+  max-width: 460px;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 48px; flex-wrap: wrap;
+}
+
+.hero-stats {
+  display: flex; gap: 32px; flex-wrap: wrap;
+  padding-top: 32px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.stat-item strong {
+  display: block;
+  font-size: 26px; font-weight: 700;
+  letter-spacing: -0.8px; color: var(--black);
+}
+
+.stat-item span {
+  font-size: 13px; color: var(--gray-400);
+  font-weight: 400;
+}
+
+/* ── CHAT WIDGET ── */
+.widget-wrap {
+  position: relative;
+}
+
+.widget {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.w-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; align-items: center; gap: 11px;
+  background: var(--white);
+}
+
+.w-av {
+  width: 36px; height: 36px;
+  background: var(--black);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+
+.w-info h4 { font-size: 14px; font-weight: 600; }
+
+.w-info p {
+  font-size: 11px; color: var(--green);
+  display: flex; align-items: center; gap: 4px; margin-top: 1px;
+}
+
+.w-badge {
+  margin-left: auto;
+  background: var(--green-light);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1.5px; padding: 3px 8px;
+  border-radius: 20px; text-transform: uppercase;
+}
+
+.w-msgs {
+  padding: 18px 14px;
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--gray-100);
+}
+
+.wm { display: flex; gap: 8px; }
+.wm.user { flex-direction: row-reverse; }
+
+.wm-av {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; flex-shrink: 0; margin-top: 2px;
+}
+
+.bbl {
+  padding: 10px 14px; border-radius: 14px;
+  font-size: 13px; line-height: 1.55; max-width: 240px;
+}
+
+.wm.bot .bbl {
+  background: var(--white); color: var(--black);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--gray-200);
+}
+
+.wm.user .bbl {
+  background: var(--black); color: var(--white);
+  border-bottom-right-radius: 4px;
+  font-weight: 500;
+}
+
+.chips {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px;
+}
+
+.chip {
+  background: var(--green-light);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 20px;
+}
+
+.tdots {
+  display: flex; align-items: center; gap: 4px;
+  padding: 10px 14px;
+  background: var(--white); border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--gray-200);
+  width: fit-content;
+}
+
+.tdots span {
+  width: 5px; height: 5px; background: var(--gray-400);
+  border-radius: 50%; animation: td 1.3s infinite;
+}
+.tdots span:nth-child(2) { animation-delay: 0.18s; }
+.tdots span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes td {
+  0%,60%,100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.w-input {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 14px; background: var(--white);
+  border-top: 1px solid var(--gray-200);
+}
+
+.w-field {
+  flex: 1; background: var(--gray-100);
+  border-radius: 20px; padding: 8px 14px;
+  font-size: 12px; color: var(--gray-400);
+  border: 1px solid var(--gray-200);
+}
+
+.w-send {
+  width: 32px; height: 32px;
+  background: var(--black); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.w-send svg { width: 13px; height: 13px; fill: var(--white); }
+
+/* Floating badges */
+.fbadge {
+  position: absolute;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  animation: flt 3s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.fbadge.a { left: -56px; bottom: 80px; }
+.fbadge.b { right: -50px; top: 80px; animation-delay: 1.5s; }
+
+@keyframes flt {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.fbadge-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+
+.fbadge small { display: block; color: var(--gray-400); font-size: 11px; font-weight: 400; }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none; border-top: 1px solid var(--gray-200);
+  margin: 0;
+}
+
+/* ── SECTIONS ── */
+.section {
+  padding: 90px 6vw;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-full {
+  padding: 90px 6vw;
+  background: var(--gray-100);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.section-full-inner { max-width: 1200px; margin: 0 auto; }
+
+.eyebrow {
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--green); margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 700; letter-spacing: -1px;
+  line-height: 1.15; margin-bottom: 14px;
+}
+
+.section-sub {
+  font-size: 16px; color: var(--gray-600);
+  line-height: 1.7; font-weight: 400;
+  max-width: 520px;
+}
+
+/* ── PROBLEM NUMBERS ── */
+.numbers-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--gray-200);
+  border-radius: var(--radius-lg); overflow: hidden;
+  margin-top: 52px;
+  border: 1px solid var(--gray-200);
+}
+
+.num-card {
+  background: var(--white); padding: 40px 36px;
+  transition: background 0.2s;
+}
+
+.num-card:hover { background: #fafafa; }
+
+.num-big {
+  font-size: 56px; font-weight: 700;
+  letter-spacing: -2px; color: var(--black);
+  line-height: 1; margin-bottom: 10px;
+}
+
+.num-big span { color: var(--green); }
+
+.num-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+
+.num-card p { font-size: 14px; color: var(--gray-600); line-height: 1.6; font-weight: 400; }
+
+/* ── HOW ── */
+.steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px; margin-top: 52px;
+}
+
+.step {
+  padding: 28px 24px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.step:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+  transform: translateY(-3px);
+}
+
+.step-n {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; color: var(--gray-400);
+  margin-bottom: 16px;
+}
+
+.step-ico {
+  width: 40px; height: 40px;
+  background: var(--green-light);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; margin-bottom: 16px;
+}
+
+.step h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.step p { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+
+/* ── INDUSTRIES ── */
+.ind-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 48px;
+}
+
+.ind-card {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 24px 20px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.ind-card:hover {
+  border-color: var(--green-border);
+  transform: translateY(-2px);
+}
+
+.ind-ico {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+  background: var(--gray-100);
+}
+
+.ind-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+.ind-card p { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+
+/* ── PRICING ── */
+.pricing-wrap { max-width: 880px; margin: 0 auto; text-align: center; }
+
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 48px; text-align: left;
+}
+
+.pc {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  display: flex; flex-direction: column;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.pc:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.07); }
+
+.pc.featured {
+  border-color: var(--black);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.feat-tag {
+  position: absolute; top: -13px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--black); color: var(--white);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; padding: 4px 12px;
+  border-radius: 20px; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pc-name {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gray-400); margin-bottom: 20px;
+}
+
+.pc-price {
+  display: flex; align-items: flex-end; gap: 2px;
+  margin-bottom: 4px;
+}
+
+.pc-price .amt {
+  font-size: 48px; font-weight: 700;
+  letter-spacing: -2px; line-height: 1;
+}
+
+.pc-price .cur { font-size: 18px; color: var(--gray-400); padding-bottom: 6px; }
+.pc-price .per { font-size: 13px; color: var(--gray-400); padding-bottom: 8px; font-weight: 400; }
+
+.pc-setup { font-size: 12px; color: var(--gray-400); margin-bottom: 24px; }
+
+.pc hr { border: none; border-top: 1px solid var(--gray-200); margin-bottom: 20px; }
+
+.pc-feats { list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; margin-bottom: 28px; }
+
+.pc-feats li {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 13px; color: var(--gray-600); font-weight: 400;
+}
+
+.pc-feats li svg { width: 15px; height: 15px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
+
+.pc-btn {
+  display: block; text-align: center;
+  padding: 12px; border-radius: 10px;
+  font-weight: 600; font-size: 14px;
+  text-decoration: none; transition: all 0.15s;
+}
+
+.pc-btn.outline {
+  border: 1.5px solid var(--gray-200); color: var(--black);
+}
+.pc-btn.outline:hover { border-color: var(--black); }
+
+.pc-btn.solid {
+  background: var(--black); color: var(--white);
+}
+.pc-btn.solid:hover { background: var(--gray-900); }
+
+.trial-note {
+  margin-top: 28px; font-size: 14px; color: var(--gray-400);
+  text-align: center;
+}
+.trial-note strong { color: var(--green); }
+
+/* ── CTA ── */
+.cta-box {
+  max-width: 640px; margin: 0 auto; text-align: center;
+}
+
+.cta-box .section-title { margin-bottom: 16px; }
+.cta-box .section-sub { margin: 0 auto 36px; }
+
+.cta-actions {
+  display: flex; justify-content: center; align-items: center;
+  gap: 12px; flex-wrap: wrap;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 36px 6vw;
+  border-top: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+
+footer p { font-size: 13px; color: var(--gray-400); }
+
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 13px; color: var(--gray-400); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--black); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; gap: 60px; }
+  .fbadge { display: none; }
+  .numbers-grid { grid-template-columns: 1fr; gap: 1px; }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .ind-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+  .nav-links { display: none; }
+}
+
+@media (max-width: 600px) {
+  .steps { grid-template-columns: 1fr; }
+  .ind-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+}
+</style>
+</head>
+<body>
+<!-- NAV -->
+
+<!-- HERO -->
+<div style="max-width:1200px; margin:0 auto; padding:130px 6vw 90px;">
+<div class="hero" style="padding:0; max-width:none;">
+<div>
+<div class="hero-tag">
+<span class="status-dot"></span>
+        Aktywny 24/7 · Wdrożenie w 48h
+      </div>
+<h1>Twój klient pyta.<br/><em>Bot odpowiada.</em></h1>
+<p>Chatbot AI który kwalifikuje leady, odpowiada na pytania i zbiera dane kontaktowe — automatycznie, o każdej porze. Budzisz się z gotową listą do oddzwonienia.</p>
+<div class="hero-stats">
+<div class="stat-item">
+<strong>24/7</strong>
+<span>dostępność bota</span>
+</div>
+<div class="stat-item">
+<strong>48h</strong>
+<span>czas wdrożenia</span>
+</div>
+<div class="stat-item">
+<strong>14 dni</strong>
+<span>za darmo</span>
+</div>
+</div>
+</div>
+<div class="widget-wrap">
+<div class="fbadge a">
+<div class="fbadge-icon" style="background:#F0FBF4;">📩</div>
+<div>
+<strong>Nowy lead</strong>
+<small>Anna K. · Mokotów · 900 tys.</small>
+</div>
+</div>
+<div class="widget">
+<div class="w-header">
+<div class="w-av">🤖</div>
+<div class="w-info">
+<h4>Asystent AI</h4>
+<p><span class="status-dot"></span> Online teraz</p>
+</div>
+<div class="w-badge">AI</div>
+</div>
+<div class="w-msgs">
+<div class="wm bot">
+<div class="wm-av">🤖</div>
+<div class="bbl">
+              Cześć! 👋 Jestem asystentem tej firmy. W czym mogę pomóc?
+              <div class="chips">
+<span class="chip">Mam pytanie</span>
+<span class="chip">Chcę ofertę</span>
+</div>
+</div>
+</div>
+<div class="wm user">
+<div class="bbl">Chcę wiedzieć więcej o cenach</div>
+</div>
+<div class="wm bot">
+<div class="wm-av">🤖</div>
+<div class="bbl">Oczywiście! ✨ Jak mam się do Ciebie zwracać i jaki email podać do kontaktu?</div>
+</div>
+<div class="wm bot" style="margin-left:32px;">
+<div class="tdots"><span></span><span></span><span></span></div>
+</div>
+</div>
+<div class="w-input">
+<div class="w-field">Napisz wiadomość…</div>
+<div class="w-send">
+<svg viewbox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"></path></svg>
+</div>
+</div>
+</div>
+<div class="fbadge b">
+<div class="fbadge-icon" style="background:#F5F5F5;">⚡</div>
+<div>
+<strong>Czas odpowiedzi</strong>
+<small>&lt;2 sek. · całą dobę</small>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- PROBLEM -->
+<div class="section-full">
+<div class="section-full-inner">
+<div class="eyebrow">Problem</div>
+<h2 class="section-title">Co traci Twój biznes<br/>gdy nikt nie odpowiada?</h2>
+<div class="numbers-grid">
+<div class="num-card">
+<div class="num-big">70<span>%</span></div>
+<h3>Klientów pyta po godzinach</h3>
+<p>Wieczory, weekendy, święta — właśnie wtedy ludzie mają czas na decyzje. Twoja strona w tym czasie milczy.</p>
+</div>
+<div class="num-card">
+<div class="num-big">3<span>min</span></div>
+<h3>Tyle czeka klient na odpowiedź</h3>
+<p>Po 3 minutach bez odpowiedzi większość użytkowników przechodzi do konkurencji. Formularz kontaktowy nie wystarczy.</p>
+</div>
+<div class="num-card">
+<div class="num-big">0<span>zł</span></div>
+<h3>Koszt utraty leada</h3>
+<p>Nie widzisz tej straty w raporcie. Ktoś był na Twojej stronie i wyszedł. Bot to zmienia — zbiera kontakt zanim klient odejdzie.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- HOW -->
+<div class="section" id="how">
+<div class="eyebrow">Jak to działa</div>
+<h2 class="section-title">Od wizyty na stronie<br/>do gotowego leada</h2>
+<p class="section-sub">Cztery automatyczne kroki które zamieniają anonimowego odwiedzającego w kontakt gotowy do rozmowy.</p>
+<div class="steps">
+<div class="step">
+<div class="step-n">KROK 01</div>
+<div class="step-ico">🖥️</div>
+<h3>Klient wchodzi na stronę</h3>
+<p>Widget pojawia się automatycznie i wita klienta po polsku. Zero konfiguracji po stronie użytkownika.</p>
+</div>
+<div class="step">
+<div class="step-n">KROK 02</div>
+<div class="step-ico">💬</div>
+<h3>Rozmowa krok po kroku</h3>
+<p>Bot prowadzi dialog — pyta o potrzeby, budżet, preferencje. Inteligentnie, bez sztywnych skryptów.</p>
+</div>
+<div class="step">
+<div class="step-n">KROK 03</div>
+<div class="step-ico">📋</div>
+<h3>Zbiera dane kontaktowe</h3>
+<p>Imię, email, telefon i kontekst rozmowy — wszystko automatycznie, zanim klient opuści stronę.</p>
+</div>
+<div class="step">
+<div class="step-n">KROK 04</div>
+<div class="step-ico">📩</div>
+<h3>Lead trafia na Twój mail</h3>
+<p>Kompletny brief klienta w Twojej skrzynce w ciągu sekund. Budzisz się z gotową listą do oddzwonienia.</p>
+</div>
+</div>
+</div>
+
+<!-- INDUSTRIES -->
+<div class="section-full" id="industries">
+<div class="section-full-inner">
+<div class="eyebrow">Branże</div>
+<h2 class="section-title">Działa wszędzie tam,<br/>gdzie są klienci</h2>
+<p class="section-sub">Jeden bot, konfigurowany pod Twój biznes. Jeśli masz klientów — masz zastosowanie.</p>
+<div class="ind-grid">
+<div class="ind-card">
+<div class="ind-ico">🏠</div>
+<div>
+<h4>Nieruchomości</h4>
+<p>Kwalifikuje kupujących i sprzedających, pyta o metraż, budżet i lokalizację zanim agent oddzwoni.</p>
+</div>
+</div>
+<div class="ind-card">
+<div class="ind-ico">💅</div>
+<div>
+<h4>Salony urody &amp; SPA</h4>
+<p>Odpowiada na pytania o zabiegi, ceny i dostępność. Zbiera dane do rezerwacji całą dobę.</p>
+</div>
+</div>
+<div class="ind-card">
+<div class="ind-ico">🦷</div>
+<div>
+<h4>Kliniki &amp; stomatologia</h4>
+<p>Przyjmuje zapytania o wizyty, informuje o usługach i zbiera kontakty do potwierdzenia terminu.</p>
+</div>
+</div>
+<div class="ind-card">
+<div class="ind-ico">🏨</div>
+<div>
+<h4>Hotele &amp; gastronomia</h4>
+<p>Odpowiada na pytania o dostępność, menu i rezerwacje — bez angażowania personelu.</p>
+</div>
+</div>
+<div class="ind-card">
+<div class="ind-ico">🛒</div>
+<div>
+<h4>E-commerce &amp; sklepy</h4>
+<p>Pomaga wybrać produkt, odpowiada na pytania o dostawę i zwroty, prowadzi przez zakup.</p>
+</div>
+</div>
+<div class="ind-card">
+<div class="ind-ico">⚙️</div>
+<div>
+<h4>Twoja branża</h4>
+<p>Konfigurujemy bota pod specyfikę Twojego biznesu. Skontaktuj się — pokażemy jak to działa.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PRICING -->
+<div class="section" id="pricing">
+<div class="pricing-wrap">
+<div class="eyebrow" style="text-align:center;">Cennik</div>
+<h2 class="section-title" style="text-align:center;">Prosty abonament,<br/>zero niespodzianek</h2>
+<p class="section-sub" style="margin:0 auto; text-align:center;">Pierwsze 14 dni bezpłatnie. Bez karty kredytowej.</p>
+<div class="pricing-grid">
+<div class="pc">
+<div class="pc-name">Podstawowy</div>
+<div class="pc-price">
+<span class="cur">zł</span>
+<span class="amt">199</span>
+<span class="per">/mies.</span>
+</div>
+<div class="pc-setup">+ 499 zł jednorazowe wdrożenie</div>
+<hr/>
+<ul class="pc-feats">
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Chatbot na stronie WWW</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Powiadomienia mailowe</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Do 300 rozmów / mies.</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Aktualizacje co 3 miesiące</li>
+</ul>
+</div>
+<div class="pc featured">
+<div class="feat-tag">Rekomendowany</div>
+<div class="pc-name">Standardowy</div>
+<div class="pc-price">
+<span class="cur">zł</span>
+<span class="amt">349</span>
+<span class="per">/mies.</span>
+</div>
+<div class="pc-setup">+ 499 zł jednorazowe wdrożenie</div>
+<hr/>
+<ul class="pc-feats">
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Chatbot na stronie WWW</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Powiadomienia mailowe</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Do 800 rozmów / mies.</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Aktualizacje co miesiąc</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Miesięczny raport leadów</li>
+</ul>
+</div>
+<div class="pc">
+<div class="pc-name">Premium</div>
+<div class="pc-price">
+<span class="cur">zł</span>
+<span class="amt">599</span>
+<span class="per">/mies.</span>
+</div>
+<div class="pc-setup">wdrożenie w cenie</div>
+<hr/>
+<ul class="pc-feats">
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Wszystko z planu Standard</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Bez limitu rozmów</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Aktualizacje bez limitu</li>
+<li><svg fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>Priorytetowe wsparcie</li>
+</ul>
+</div>
+</div>
+<p class="trial-note">🎁 Pierwsze <strong>14 dni za darmo</strong> — bez karty kredytowej, bez zobowiązań</p>
+</div>
+</div>
+
+<!-- CTA -->
+<!-- FOOTER -->
+
+</body>
+</html>
